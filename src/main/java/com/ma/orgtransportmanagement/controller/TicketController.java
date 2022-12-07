@@ -1,11 +1,14 @@
 package com.ma.orgtransportmanagement.controller;
 
+import com.ma.orgtransportmanagement.entity.Vehicle;
 import com.ma.orgtransportmanagement.service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RequestMapping(path = "Ticket")
 @RestController
@@ -18,7 +21,7 @@ public class TicketController {
     }
 
     @RequestMapping(value = "/g_required_buses",method = RequestMethod.GET)
-    public String getRequiredBuses(){
+    public List<Vehicle> getRequiredBuses(){
         return ticketService.getRequiredBuses();
     }
 }

@@ -28,6 +28,16 @@ public class Trip {
     @Column(name = "no_of_passenger")
     private Integer noOfPassenger;
 
+    public Trip(){
+
+    }
+    public Trip(String tripName,String fromPlace, String toPlace,Double numberOfKm){
+        this.tripName = tripName;
+        this.fromPlace = fromPlace;
+        this.toPlace = toPlace;
+        this.numberOfKm = numberOfKm;
+
+    }
     public Long getTripId() {
         return tripId;
     }

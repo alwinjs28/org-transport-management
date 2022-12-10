@@ -14,7 +14,7 @@ public class Passenger {
     private String passengerType;
 
     @Column(name = "id_number")
-    private Integer idNumber;
+    private Long idNumber;
 
     @Column(name = "passenger_name")
     private String passengerName;
@@ -44,11 +44,11 @@ public class Passenger {
         this.passengerType = passengerType;
     }
 
-    public Integer getIdNumber() {
+    public Long getIdNumber() {
         return idNumber;
     }
 
-    public void setIdNumber(Integer idNumber) {
+    public void setIdNumber(Long idNumber) {
         this.idNumber = idNumber;
     }
 

@@ -34,4 +34,6 @@ public class PassengerController {
     public void deletePassenger(@RequestBody Passenger passenger){
         passengerService.delete(passenger);
     }
+
 }
+

@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class PassengerDto implements Serializable {
     private Long passengerId;
     private String passengerType;
-    private Integer idNumber;
+    private Long idNumber;
     private String passengerName;
 
     public PassengerDto(){
@@ -28,11 +28,11 @@ public class PassengerDto implements Serializable {
         this.passengerType = passengerType;
     }
 
-    public Integer getIdNumber() {
+    public Long getIdNumber() {
         return idNumber;
     }
 
-    public void setIdNumber(Integer idNumber) {
+    public void setIdNumber(Long idNumber) {
         this.idNumber = idNumber;
     }
 

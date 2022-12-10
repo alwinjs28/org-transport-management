@@ -68,9 +68,9 @@ public class TicketServiceImpl implements TicketService {
         if (studentResponseEntity != null && studentResponseEntity.getStatusCodeValue() == 200) {
             String stringifyJSON = studentResponseEntity.getBody();
             //log.info(responseJson);
-            String responseJson2[] = stringifyJSON.split("},");
-            log.info("Length {}", responseJson2.length);
-            int numberOfStudents = responseJson2.length;
+            String responseJson[] = stringifyJSON.split("},");
+            log.info("Length {}", responseJson.length);
+            int numberOfStudents = responseJson.length;
             List<Vehicle> vehicles = vehicleRepository.getVehicleByVehicleType(student);
             int nearestNumber = 0;
             boolean firstTime = true;

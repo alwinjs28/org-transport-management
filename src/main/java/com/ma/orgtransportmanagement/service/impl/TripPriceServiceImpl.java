@@ -8,8 +8,10 @@ import com.ma.orgtransportmanagement.util.TransportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 @Service
 public class TripPriceServiceImpl implements TripPriceService {
+
     @Autowired
     TripPriceRepository tripPriceRepository;
 
@@ -42,4 +44,7 @@ public class TripPriceServiceImpl implements TripPriceService {
         tripPriceRepository.delete(tripPrice);
 
     }
+
+
+
 }

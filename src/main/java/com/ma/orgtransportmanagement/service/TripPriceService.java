@@ -8,4 +8,5 @@ public interface TripPriceService {
     public TripPriceDto save(TripPrice tripPrice);
     public TripPriceDto update(TripPrice tripPrice);
     public void delete(TripPrice tripPrice);
+
 }

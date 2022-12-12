@@ -37,15 +37,19 @@ public class PassengerServiceImpl implements PassengerService {
         return dtoGetResponse;
     }
 
-    public PassengerDto savePassenger(Passenger passenger) {
-        Long passengerId = passenger.getIdNumber();
-        String studentName = null;
-        String type = passenger.getPassengerType();
-        if (type.equals(Constants.PASSENGER_TYPE_STUDENT)) {
-            studentName = getStudentName();
-        }
+    public PassengerDto savePassenger(PassengerDto passengerDto) {
 
-        passenger.setPassengerType(studentName);
+        Long passengerId = passengerDto.getIdNumber();
+        String passengerName = null;
+        String type = passengerDto.getPassengerType();
+        if (type.equals(Constants.PASSENGER_TYPE_STUDENT)) {
+            passengerName = getStudentName(passengerId);
+        }
+      
+        passengerDto.setPassengerName(passengerName);
+        passengerDto.setPassengerId(passengerId);
+        TransportUtil transportUtilReferance = new TransportUtil();
+        Passenger passenger = transportUtilReferance.convertPassengerDtoToEntity(passengerDto);
         Passenger savePassenger = passengerRepository.save(passenger);
         TransportUtil transportUtil = new TransportUtil();
         PassengerDto dtoSaveResponse = transportUtil.convertPassengerEntityToDto(savePassenger);
@@ -65,7 +69,7 @@ public class PassengerServiceImpl implements PassengerService {
         passengerRepository.delete(passenger);
     }
 
-    public String getStudentName() {
+    public String getStudentName(Long passengerId) {
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
@@ -73,24 +77,25 @@ public class PassengerServiceImpl implements PassengerService {
         HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
 
 
-        Integer studentId = 0;
-
         // http://localhost:8087/student/g_student
 
         String url = studentServiceAddress.concat(Constants.GET_STUDENT_BY_ID_URL);
 
         // url ? id = 1
 
-        String urlWithQueryParam = url.concat(Constants.STUDENT_QUERY).concat(String.valueOf(studentId));
+        String urlWithQueryParam = url.concat(Constants.STUDENT_QUERY).concat(String.valueOf(passengerId));
 
 
         log.info("url {}", urlWithQueryParam);
-
+        String name = "null";
         ResponseEntity<String> studentResponseEntity = restTemplate.exchange(urlWithQueryParam, HttpMethod.GET, httpEntity, String.class);
         if (studentResponseEntity != null && studentResponseEntity.getStatusCodeValue() == 200) {
             String stringifyJSON = studentResponseEntity.getBody();
             log.info("student response:{}", stringifyJSON);
-            String jsonResponse[] = stringifyJSON.split("},");
-      
+            String jsonResponse[] = stringifyJSON.split("\"studentName\":\"")[1].split("\",\"");
+            name = jsonResponse[0];
+            log.info("name: {}",name);
+        }
+        return name;
     }
 }

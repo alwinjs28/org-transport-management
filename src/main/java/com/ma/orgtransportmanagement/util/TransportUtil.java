@@ -42,4 +42,14 @@ public class TransportUtil {
 
         return tripPriceDto;
     }
+    public Passenger convertPassengerDtoToEntity(PassengerDto passengerDto){
+        Passenger passenger = new Passenger();
+
+        passenger.setPassengerId(passengerDto.getPassengerId());
+        passenger.setPassengerType(passengerDto.getPassengerType());
+        passenger.setIdNumber(passengerDto.getIdNumber());
+        passenger.setPassengerName(passengerDto.getPassengerName());
+
+        return passenger;
+    }
 }

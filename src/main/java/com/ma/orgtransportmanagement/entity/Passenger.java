@@ -23,8 +23,10 @@ public class Passenger {
 
     }
 
-    public Passenger(Long passengerId,String passengerName){
+    public Passenger(Long passengerId,String passengerType,Long idNumber, String passengerName){
         this.passengerId = passengerId;
+        this.passengerType = passengerType;
+        this.idNumber = idNumber;
         this.passengerName = passengerName;
     }
 

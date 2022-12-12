@@ -19,8 +19,8 @@ public class PassengerController {
 
     @RequestMapping(value = "s_passenger",method = RequestMethod.POST)
     @ResponseBody
-    public PassengerDto savePassenger(@RequestBody Passenger passenger){
-        return passengerService.savePassenger(passenger);
+    public PassengerDto savePassenger(@RequestBody PassengerDto passengerDto){
+        return passengerService.savePassenger(passengerDto);
     }
 
     @RequestMapping(value = "u_passenger",method = RequestMethod.PUT)

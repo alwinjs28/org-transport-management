@@ -16,8 +16,15 @@ public class PassengerServiceImplTest {
     @Test
     public void getStudentNameTest(){
         Long passengerId = 1L;
+//        when(passengerService.getStudentName(any())).thenReturn("Jebin");
         String name = passengerService.getStudentName(passengerId);
         log.info("name :{}",name);
+    }
+    @Test
+    public void getStaffNameTest(){
+        Long passengerId = 1L;
+        String url = passengerService.getStaffName(passengerId);
+        log.info("OutPut url is: {}",url);
     }
 
 }

@@ -7,9 +7,17 @@ public class PassengerDto implements Serializable {
     private String passengerType;
     private Long idNumber;
     private String passengerName;
+    private Long tripId;
 
     public PassengerDto(){
 
+    }
+    public PassengerDto(Long passengerId,String passengerType,Long idNumber,String passengerName,Long tripId){
+        this.passengerId = passengerId;
+        this.passengerType = passengerType;
+        this.idNumber = idNumber;
+        this.passengerName = passengerName;
+        this.tripId = tripId;
     }
 
     public Long getPassengerId() {
@@ -42,5 +50,13 @@ public class PassengerDto implements Serializable {
 
     public void setPassengerName(String passengerName) {
         this.passengerName = passengerName;
+    }
+
+    public Long getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
     }
 }

@@ -10,4 +10,7 @@ public interface TripPriceRepository extends JpaRepository <TripPrice,Long>{
     @Query(value = "SELECT t FROM TripPrice t WHERE t.tripPriceId=?1")
     public TripPrice getTripPrice(Long tripPriceId);
 
+    @Query(value = "SELECT t FROM TripPrice t WHERE t.passengerType=?1")
+    public TripPrice getAmount(String passengerType,Long tripId);
+
 }

@@ -41,10 +41,10 @@ public class PassengerServiceImpl implements PassengerService {
         Long passengerId = passengerDto.getIdNumber();
         String passengerName = null;
         String type = passengerDto.getPassengerType();
-        if (type.equalsIgnoreCase(Constants.PASSENGER_TYPE_STUDENT)) {
+        if (type.equals(Constants.PASSENGER_TYPE_STUDENT)) {
             passengerName = getStudentName(passengerId);
         }
-        else if(type.equalsIgnoreCase(Constants.PASSENGER_TYPE_STAFF)){
+        else if(type.equals(Constants.PASSENGER_TYPE_STAFF)){
             passengerName = getStaffName(passengerId);
         }
 

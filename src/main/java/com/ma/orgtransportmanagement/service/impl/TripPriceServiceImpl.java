@@ -45,6 +45,12 @@ public class TripPriceServiceImpl implements TripPriceService {
 
     }
 
+    @Override
+    public TripPriceDto getAmount(String passengerType, Long tripId) {
+        TripPrice getAmount = tripPriceRepository.getAmount(passengerType,tripId);
+        TransportUtil transportUtil = new TransportUtil();
+        TripPriceDto dtoResponse = transportUtil.convertEntityToDto(getAmount);
 
-
+        return dtoResponse;
+    }
 }

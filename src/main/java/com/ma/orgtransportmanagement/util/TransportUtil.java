@@ -33,6 +33,7 @@ public class TransportUtil extends MainUtil {
        passengerDto.setPassengerType(passenger.getPassengerType());
        passengerDto.setIdNumber(passenger.getIdNumber());
        passengerDto.setPassengerName(passenger.getPassengerName());
+       passengerDto.setTripId(passenger.getTripId());
 
        return passengerDto;
     }
@@ -53,6 +54,7 @@ public class TransportUtil extends MainUtil {
         passenger.setPassengerType(passengerDto.getPassengerType());
         passenger.setIdNumber(passengerDto.getIdNumber());
         passenger.setPassengerName(passengerDto.getPassengerName());
+        passenger.setTripId(passengerDto.getTripId());
 
         return passenger;
     }

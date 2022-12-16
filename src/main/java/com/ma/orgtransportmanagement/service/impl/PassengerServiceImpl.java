@@ -1,7 +1,6 @@
 package com.ma.orgtransportmanagement.service.impl;
 
 import com.ma.orgtransportmanagement.dto.PassengerDto;
-import com.ma.orgtransportmanagement.dto.TripPriceDto;
 import com.ma.orgtransportmanagement.entity.Passenger;
 import com.ma.orgtransportmanagement.repository.PassengerRepository;
 import com.ma.orgtransportmanagement.service.PassengerService;
@@ -15,8 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 @Slf4j
 
@@ -26,13 +23,15 @@ public class PassengerServiceImpl implements PassengerService {
     RestTemplate restTemplate;
     @Value("${org.student.service.address}")
     private String studentServiceAddress;
+    @Value("${org.staff.service.address}")
+    private String staffServiceAddress;
     @Autowired
     PassengerRepository passengerRepository;
 
     public PassengerDto getPassenger(Long passengerId) {
         Passenger getPassenger = passengerRepository.getPassenger(passengerId);
         TransportUtil transportUtil = new TransportUtil();
-        PassengerDto dtoGetResponse = transportUtil.convertPassengerEntityToDto(getPassenger);
+        PassengerDto dtoGetResponse = transportUtil.convertEntityToDto(getPassenger);
 
         return dtoGetResponse;
     }
@@ -42,17 +41,21 @@ public class PassengerServiceImpl implements PassengerService {
         Long passengerId = passengerDto.getIdNumber();
         String passengerName = null;
         String type = passengerDto.getPassengerType();
-        if (type.equals(Constants.PASSENGER_TYPE_STUDENT)) {
+        if (type.equalsIgnoreCase(Constants.PASSENGER_TYPE_STUDENT)) {
             passengerName = getStudentName(passengerId);
         }
+        else if(type.equalsIgnoreCase(Constants.PASSENGER_TYPE_STAFF)){
+            passengerName = getStaffName(passengerId);
+        }
+
       
         passengerDto.setPassengerName(passengerName);
         passengerDto.setPassengerId(passengerId);
-        TransportUtil transportUtilReferance = new TransportUtil();
-        Passenger passenger = transportUtilReferance.convertPassengerDtoToEntity(passengerDto);
+        TransportUtil transportUtilReference = new TransportUtil();
+        Passenger passenger = transportUtilReference.convertDtoToEntity(passengerDto);
         Passenger savePassenger = passengerRepository.save(passenger);
         TransportUtil transportUtil = new TransportUtil();
-        PassengerDto dtoSaveResponse = transportUtil.convertPassengerEntityToDto(savePassenger);
+        PassengerDto dtoSaveResponse = transportUtil.convertEntityToDto(savePassenger);
 
         return dtoSaveResponse;
     }
@@ -60,7 +63,7 @@ public class PassengerServiceImpl implements PassengerService {
     public PassengerDto updatePassenger(Passenger passenger) {
         Passenger updatePassenger = passengerRepository.save(passenger);
         TransportUtil transportUtil = new TransportUtil();
-        PassengerDto dtoUpdateResponse = transportUtil.convertPassengerEntityToDto(updatePassenger);
+        PassengerDto dtoUpdateResponse = transportUtil.convertEntityToDto(updatePassenger);
 
         return dtoUpdateResponse;
     }
@@ -87,7 +90,7 @@ public class PassengerServiceImpl implements PassengerService {
 
 
         log.info("url {}", urlWithQueryParam);
-        String name = "null";
+        String name = null;
         ResponseEntity<String> studentResponseEntity = restTemplate.exchange(urlWithQueryParam, HttpMethod.GET, httpEntity, String.class);
         if (studentResponseEntity != null && studentResponseEntity.getStatusCodeValue() == 200) {
             String stringifyJSON = studentResponseEntity.getBody();
@@ -96,6 +99,30 @@ public class PassengerServiceImpl implements PassengerService {
             name = jsonResponse[0];
             log.info("name: {}",name);
         }
+        return name;
+    }
+    public String getStaffName(Long passengerId){
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setAccept(Arrays.asList(MediaType.APPLICATION_JSON));
+
+        HttpEntity<String> httpEntity = new HttpEntity<>(httpHeaders);
+
+        String url = staffServiceAddress.concat(Constants.GET_STAFF_BY_ID_URL);
+        log.info("OutPut is: {}",url);
+
+        String urlWithQueryParam = url.concat(Constants.STAFF_QUERY).concat(String.valueOf(passengerId));
+        log.info("OutPut with query is: {}",urlWithQueryParam);
+        String name = null;
+        ResponseEntity<String> staffResponseEntity = restTemplate.exchange(urlWithQueryParam,HttpMethod.GET,httpEntity,String.class);
+        if (staffResponseEntity != null && staffResponseEntity.getStatusCodeValue() == 200){
+            String stringifyJSON = staffResponseEntity.getBody();
+            log.info("Staff Response: {}",stringifyJSON);
+
+            String jsonResponse[] = stringifyJSON.split("\"staffName\":\"")[1].split("\",\"");
+            name = jsonResponse[0];
+        }
+
         return name;
     }
 }

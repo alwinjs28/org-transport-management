@@ -11,5 +11,5 @@ public interface PassengerService {
     public void delete(Passenger passenger);
     public String getStudentName(Long passengerId);
 
-
+    public String getStaffName(Long passengerId);
 }

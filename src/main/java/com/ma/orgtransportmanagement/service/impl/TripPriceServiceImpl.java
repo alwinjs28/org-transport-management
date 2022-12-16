@@ -18,7 +18,7 @@ public class TripPriceServiceImpl implements TripPriceService {
     public TripPriceDto getTripPrice(Long tripPriceId){
         TripPrice getTripPrice = tripPriceRepository.getTripPrice(tripPriceId);
         TransportUtil transportUtil = new TransportUtil();
-        TripPriceDto dtoGetResponse = transportUtil.convertTripPriceEntityToDto(getTripPrice);
+        TripPriceDto dtoGetResponse = transportUtil.convertEntityToDto(getTripPrice);
 
         return dtoGetResponse;
     }
@@ -26,7 +26,7 @@ public class TripPriceServiceImpl implements TripPriceService {
     public TripPriceDto save(TripPrice tripPrice){
         TripPrice saveTripPrice = tripPriceRepository.save(tripPrice);
         TransportUtil transportUtil = new TransportUtil();
-        TripPriceDto dtoSaveResponse = transportUtil.convertTripPriceEntityToDto(saveTripPrice);
+        TripPriceDto dtoSaveResponse = transportUtil.convertEntityToDto(saveTripPrice);
 
         return dtoSaveResponse;
     }
@@ -35,7 +35,7 @@ public class TripPriceServiceImpl implements TripPriceService {
     public TripPriceDto update(TripPrice tripPrice) {
         TripPrice updateTripPrice = tripPriceRepository.save(tripPrice);
         TransportUtil transportUtil = new TransportUtil();
-        TripPriceDto dtoUpdateResponse = transportUtil.convertTripPriceEntityToDto(updateTripPrice);
+        TripPriceDto dtoUpdateResponse = transportUtil.convertEntityToDto(updateTripPrice);
         return dtoUpdateResponse;
     }
 

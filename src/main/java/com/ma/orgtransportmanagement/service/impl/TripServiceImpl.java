@@ -16,19 +16,19 @@ public class TripServiceImpl implements TripService {
     public TripDto getTrip(Long tripId){
         Trip getTrip = tripRepository.getTrip(tripId);
         TransportUtil transportUtil = new TransportUtil();
-        TripDto dtoGetResponse = transportUtil.convertTripEntityToDto(getTrip);
+        TripDto dtoGetResponse = transportUtil.convertEntityToDto(getTrip);
         return dtoGetResponse;
     }
     public TripDto save(Trip trip){
         Trip saveTrip = tripRepository.save(trip);
         TransportUtil transportUtil = new TransportUtil();
-        TripDto dtoSaveResponse = transportUtil.convertTripEntityToDto(saveTrip);
+        TripDto dtoSaveResponse = transportUtil.convertEntityToDto(saveTrip);
         return dtoSaveResponse;
     }
     public TripDto update(Trip trip){
         Trip updateTrip = tripRepository.save(trip);
         TransportUtil transportUtil = new TransportUtil();
-        TripDto dtoUpdateResponse = transportUtil.convertTripEntityToDto(updateTrip);
+        TripDto dtoUpdateResponse = transportUtil.convertEntityToDto(updateTrip);
         return dtoUpdateResponse;
     }
     public void delete(Trip trip){

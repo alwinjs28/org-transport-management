@@ -1,16 +1,19 @@
 package com.ma.orgtransportmanagement.util;
 
+import com.ma.orgtransportmanagement.dto.BusFeesDto;
 import com.ma.orgtransportmanagement.dto.PassengerDto;
 import com.ma.orgtransportmanagement.dto.TripDto;
 import com.ma.orgtransportmanagement.dto.TripPriceDto;
+import com.ma.orgtransportmanagement.entity.BusFees;
 import com.ma.orgtransportmanagement.entity.Passenger;
 import com.ma.orgtransportmanagement.entity.Trip;
 import com.ma.orgtransportmanagement.entity.TripPrice;
 
 
-public class TransportUtil {
+public class TransportUtil extends MainUtil {
 
-    public TripDto convertTripEntityToDto(Trip trip){
+    @Override
+    public TripDto convertEntityToDto(Trip trip){
        TripDto tripDto = new TripDto();
 
        tripDto.setTripId(trip.getTripId());
@@ -22,7 +25,8 @@ public class TransportUtil {
        tripDto.setNoOfPassenger(trip.getNoOfPassenger());
        return tripDto;
     }
-    public PassengerDto convertPassengerEntityToDto(Passenger passenger){
+    @Override
+    public PassengerDto convertEntityToDto(Passenger passenger){
        PassengerDto passengerDto = new PassengerDto();
 
        passengerDto.setPassengerId(passenger.getPassengerId());
@@ -32,7 +36,7 @@ public class TransportUtil {
 
        return passengerDto;
     }
-    public TripPriceDto convertTripPriceEntityToDto(TripPrice tripPrice){
+    public TripPriceDto convertEntityToDto(TripPrice tripPrice){
         TripPriceDto tripPriceDto = new TripPriceDto();
 
         tripPriceDto.setTripPriceId(tripPrice.getTripPriceId());
@@ -42,7 +46,7 @@ public class TransportUtil {
 
         return tripPriceDto;
     }
-    public Passenger convertPassengerDtoToEntity(PassengerDto passengerDto){
+    public Passenger convertDtoToEntity(PassengerDto passengerDto){
         Passenger passenger = new Passenger();
 
         passenger.setPassengerId(passengerDto.getPassengerId());
@@ -51,5 +55,28 @@ public class TransportUtil {
         passenger.setPassengerName(passengerDto.getPassengerName());
 
         return passenger;
+    }
+    public BusFeesDto convertEntityToDto(BusFees busFees){
+        BusFeesDto busFeesDto = new BusFeesDto();
+
+        busFeesDto.setBusTypeId(busFees.getBusTypeId());
+        busFeesDto.setPassengerId(busFees.getPassengerId());
+        busFeesDto.setTotalAmount(busFees.getTotalAmount());
+        busFeesDto.setPaidAmount(busFees.getPaidAmount());
+        busFeesDto.setDueAmount(busFees.getDueAmount());
+
+        return busFeesDto;
+    }
+
+    public BusFees convertDtoToEntity(BusFeesDto busFeesDto){
+        BusFees busFees = new BusFees();
+
+        busFees.setBusTypeId(busFeesDto.getBusTypeId());
+        busFees.setPassengerId(busFeesDto.getPassengerId());
+        busFees.setTotalAmount(busFeesDto.getTotalAmount());
+        busFees.setPaidAmount(busFeesDto.getPaidAmount());
+        busFees.setDueAmount(busFeesDto.getDueAmount());
+
+        return busFees;
     }
 }

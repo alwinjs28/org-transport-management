@@ -19,15 +19,19 @@ public class Passenger {
     @Column(name = "passenger_name")
     private String passengerName;
 
+    @Column(name = "trip_id")
+    private Long tripId;
+
     public Passenger(){
 
     }
 
-    public Passenger(Long passengerId,String passengerType,Long idNumber, String passengerName){
+    public Passenger(Long passengerId,String passengerType,Long idNumber, String passengerName,Long tripId){
         this.passengerId = passengerId;
         this.passengerType = passengerType;
         this.idNumber = idNumber;
         this.passengerName = passengerName;
+        this.tripId = tripId;
     }
 
     public Long getPassengerId() {
@@ -60,5 +64,13 @@ public class Passenger {
 
     public void setPassengerName(String passengerName) {
         this.passengerName = passengerName;
+    }
+
+    public Long getTripId() {
+        return tripId;
+    }
+
+    public void setTripId(Long tripId) {
+        this.tripId = tripId;
     }
 }

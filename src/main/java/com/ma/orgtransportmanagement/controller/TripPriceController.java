@@ -34,4 +34,10 @@ public class TripPriceController {
     public void delete(@RequestBody TripPrice tripPrice){
         tripPriceService.delete(tripPrice);
     }
+
+    @RequestMapping(value = "g_amount/{passenger_type}/{trip_id}",method = RequestMethod.GET)
+    @ResponseBody
+    public TripPriceDto getAmount(@PathVariable("passenger_type")String passengerType,@PathVariable("trip_id")Long tripId){
+        return tripPriceService.getAmount(passengerType,tripId);
+    }
 }

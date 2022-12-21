@@ -2,10 +2,8 @@ package com.ma.orgtransportmanagement;
 
 import com.ma.orgtransportmanagement.controller.BusFeesController;
 import com.ma.orgtransportmanagement.dto.BusFeesDto;
-import com.ma.orgtransportmanagement.dto.response.ResponseWrapperDto;
-import com.ma.orgtransportmanagement.service.BusFeesService;
+import com.ma.orgtransportmanagement.dto.response.BusFeesResponseWrapperDto;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -24,7 +22,7 @@ public class BusFeesControllerTest {
         busFeesDto.setTotalAmount(Double.valueOf(5000));
         busFeesDto.setDueAmount(Double.valueOf(3000));
 
-        ResponseWrapperDto saveTotalAmount = busFeesController.saveTotalAmount(busFeesDto);
+        BusFeesResponseWrapperDto saveTotalAmount = busFeesController.saveTotalAmount(busFeesDto);
 
         BusFeesDto busFees = saveTotalAmount.getBusFeesDto();
 

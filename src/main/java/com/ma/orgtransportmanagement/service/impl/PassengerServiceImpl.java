@@ -1,6 +1,9 @@
 package com.ma.orgtransportmanagement.service.impl;
 
 import com.ma.orgtransportmanagement.dto.PassengerDto;
+import com.ma.orgtransportmanagement.dto.response.MessageLevel;
+import com.ma.orgtransportmanagement.dto.response.MetaDataDto;
+import com.ma.orgtransportmanagement.dto.response.PassengerResponseWrapperDto;
 import com.ma.orgtransportmanagement.entity.Passenger;
 import com.ma.orgtransportmanagement.repository.PassengerRepository;
 import com.ma.orgtransportmanagement.service.PassengerService;
@@ -28,12 +31,24 @@ public class PassengerServiceImpl implements PassengerService {
     @Autowired
     PassengerRepository passengerRepository;
 
-    public PassengerDto getPassenger(Long passengerId) {
-        Passenger getPassenger = passengerRepository.getPassenger(passengerId);
-        TransportUtil transportUtil = new TransportUtil();
-        PassengerDto dtoGetResponse = transportUtil.convertEntityToDto(getPassenger);
+    public PassengerResponseWrapperDto getPassenger(Long passengerId) {
+        Passenger passenger = passengerRepository.getPassenger(passengerId);
+        PassengerResponseWrapperDto passengerResponseWrapperDto = new PassengerResponseWrapperDto();
+        MetaDataDto metaDataDto = new MetaDataDto();
+        if (passenger == null) {
+            metaDataDto.setMessage("Invalid passengerId: " + passengerId);
+            metaDataDto.setMessageLevel(MessageLevel.ERROR.toString());
+        }else {
+            TransportUtil transportUtil = new TransportUtil();
+            PassengerDto dtoGetResponse = transportUtil.convertEntityToDto(passenger);
+            metaDataDto.setMessage("The passenger Id:"+passenger.getPassengerId());
+            metaDataDto.setMessageLevel(MessageLevel.INFO.toString());
+            passengerResponseWrapperDto.setPassengerDto(dtoGetResponse);
 
-        return dtoGetResponse;
+        }
+        passengerResponseWrapperDto.setMetaDataDto(metaDataDto);
+
+        return passengerResponseWrapperDto;
     }
 
     public PassengerDto savePassenger(PassengerDto passengerDto) {

@@ -3,8 +3,10 @@ package com.ma.orgtransportmanagement.service.impl;
 import com.ma.orgtransportmanagement.dto.BusFeesDto;
 import com.ma.orgtransportmanagement.dto.PassengerDto;
 import com.ma.orgtransportmanagement.dto.TripPriceDto;
+import com.ma.orgtransportmanagement.dto.response.MessageLevel;
 import com.ma.orgtransportmanagement.dto.response.MetaDataDto;
-import com.ma.orgtransportmanagement.dto.response.ResponseWrapperDto;
+import com.ma.orgtransportmanagement.dto.response.BusFeesResponseWrapperDto;
+import com.ma.orgtransportmanagement.dto.response.PassengerResponseWrapperDto;
 import com.ma.orgtransportmanagement.entity.BusFees;
 import com.ma.orgtransportmanagement.entity.Passenger;
 import com.ma.orgtransportmanagement.repository.BusFeesRepository;
@@ -14,6 +16,8 @@ import com.ma.orgtransportmanagement.service.TripPriceService;
 import com.ma.orgtransportmanagement.util.TransportUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 @Service
 public class BusFeesServiceImpl implements BusFeesService {
@@ -63,61 +67,87 @@ public class BusFeesServiceImpl implements BusFeesService {
     }
 
     @Override
-    public ResponseWrapperDto saveTotalAmount(BusFeesDto busFeesDto) {
+    public BusFeesResponseWrapperDto saveTotalAmount(BusFeesDto busFeesDto) {
+        BusFeesResponseWrapperDto busFeesResponseWrapperDto = new BusFeesResponseWrapperDto();
+        MetaDataDto metaDataDto = new MetaDataDto();
         Long passengerId = busFeesDto.getPassengerId();
-        Long busTypeId = busFeesDto.getBusFeesId();
-        PassengerDto passenger = passengerService.getPassenger(passengerId);
-        String passengerType = passenger.getPassengerType();
-        Long tripId = passenger.getTripId();
+        PassengerResponseWrapperDto wrapperDto = passengerService.getPassenger(passengerId);
+        PassengerDto passengerDto = wrapperDto.getPassengerDto();
 
-        TripPriceDto tripPriceDto = tripPriceService.getAmount(passengerType,tripId);
-        Double totalAmount = tripPriceDto.getTotalAmount();
-        Double paidAmount = busFeesDto.getPaidAmount();
-        //BusFees get
-        //busfeesid velila eadukanum
-        //add paid amount
-        //save the due amount
-        //set in dto
-        //convert entity
-        //call update method
+        if (passengerDto == null){
+            metaDataDto.setMessage("Invalid passengerId :" + passengerId);
+            metaDataDto.setMessageLevel(MessageLevel.ERROR.toString());
+            busFeesResponseWrapperDto.setMetaDataDto(metaDataDto);
+        }else {
 
-        double dueAmount = 0;
+            String passengerType = passengerDto.getPassengerType();
+            Long tripId = passengerDto.getTripId();
 
-        dueAmount = totalAmount-paidAmount;
-
-        busFeesDto.setPassengerId(passengerId);
-        busFeesDto.setTotalAmount(totalAmount);
-        busFeesDto.setDueAmount(dueAmount);
-
-        BusFees busFeesReference = busFeesRepository.getBusFees(passengerId);
-        Long busFeesId = busFeesReference.getBusFeesId();
-        BusFeesDto busFeesDtoValue = getBusFees(busFeesId);
-        Double alreadyPaidAmount = busFeesDtoValue.getPaidAmount();
-        Double totalPaidAmount = alreadyPaidAmount+paidAmount;
+            TripPriceDto tripPriceDto = tripPriceService.getTripPrice(passengerType, tripId);
+            Double totalAmount = tripPriceDto.getTotalAmount();
+            Double paidAmount = busFeesDto.getPaidAmount();
+            //BusFees get
+            //busfeesid velila eadukanum
+            //add paid amount
+            //save the due amount
+            //set in dto
+            //convert entity
+            //call update method
 
 
-        busFeesDto.setPaidAmount(totalPaidAmount);
-        busFeesDto.setBusFeesId(busFeesId);
+            busFeesDto.setPassengerId(passengerId);
+            busFeesDto.setTotalAmount(totalAmount);
+            Date todaysDate = new Date();
+            busFeesDto.setPaidDate(todaysDate);
+            double dueAmount = 0;
+            BusFees busFeesReference = busFeesRepository.getBusFeesByPassengerId(passengerId);
+            if(busFeesReference != null){
+                //update- value irunthu ina execute aagum
+                Long busFeesId = busFeesReference.getBusFeesId();
+                BusFeesDto busFeesDtoValue = getBusFees(busFeesId);
+
+                Double alreadyPaidAmount = busFeesDtoValue.getPaidAmount();
+                Double totalPaidAmount = alreadyPaidAmount + paidAmount;
+                busFeesDto.setPaidAmount(totalPaidAmount);
+                busFeesDto.setBusFeesId(busFeesId);
+
+                dueAmount = totalAmount - totalPaidAmount; //5000 - (2000 + 500)
+                busFeesDto.setDueAmount(dueAmount);
 
 
-        TransportUtil transportUtil = new TransportUtil();
-        BusFees busFees = transportUtil.convertDtoToEntity(busFeesDto);
-        BusFees saveTotalAmount = busFeesRepository.save(busFees);
+            }else {
+                //save
+                busFeesDto.setPaidAmount(paidAmount);
+                dueAmount = totalAmount - paidAmount; //5000 - 500
+                busFeesDto.setDueAmount(dueAmount);
+            }
+
+
+            if (dueAmount == 0) {
+                metaDataDto.setMessage("There is no dues for this passenger Id : " + busFeesDto.getPassengerId());
+                metaDataDto.setMessageLevel(MessageLevel.INFO.toString());
+            } else if (dueAmount > 0) {
+                metaDataDto.setMessage("Now the pending balance is " + dueAmount);
+                metaDataDto.setMessageLevel(MessageLevel.INFO.toString());
+            } else if (dueAmount < 0) {
+                metaDataDto.setMessage("You dont have any balance");
+                metaDataDto.setMessageLevel(MessageLevel.INFO.toString());
+            }
+
+
+            TransportUtil transportUtil = new TransportUtil();
+            BusFees busFees = transportUtil.convertDtoToEntity(busFeesDto);
+            BusFees saveTotalAmount = busFeesRepository.save(busFees);
 
 //        TransportUtil transportUtilReference = new TransportUtil();
-        BusFeesDto busFeesDtoReference = transportUtil.convertEntityToDto(saveTotalAmount);
+            BusFeesDto busFeesDtoReference = transportUtil.convertEntityToDto(saveTotalAmount);
 
-        ResponseWrapperDto responseWrapperDto = new ResponseWrapperDto();
-        MetaDataDto metaDataDto = new MetaDataDto();
-        if(dueAmount <= 0) {
-            metaDataDto.setMessage("There is no dues for this passenger Id : " + busFees.getPassengerId());
-        }
-        else if(dueAmount > 0) {
-            metaDataDto.setMessage("Now the pending balance is " + dueAmount);
-        }
 
-        responseWrapperDto.setMetaDataDto(metaDataDto);
-        responseWrapperDto.setBusFeesDto(busFeesDtoReference);
-        return responseWrapperDto;
+
+            busFeesResponseWrapperDto.setMetaDataDto(metaDataDto);
+            busFeesResponseWrapperDto.setBusFeesDto(busFeesDtoReference);
+
+        }
+        return busFeesResponseWrapperDto;
     }
 }

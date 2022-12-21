@@ -1,6 +1,7 @@
 package com.ma.orgtransportmanagement.controller;
 
 import com.ma.orgtransportmanagement.dto.PassengerDto;
+import com.ma.orgtransportmanagement.dto.response.PassengerResponseWrapperDto;
 import com.ma.orgtransportmanagement.entity.Passenger;
 import com.ma.orgtransportmanagement.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ public class PassengerController {
     PassengerService passengerService;
     @RequestMapping(value = "g_passenger",method = RequestMethod.GET)
     @ResponseBody
-    public PassengerDto getPassenger(@RequestParam("passenger_id")Long passengerId){
+    public PassengerResponseWrapperDto getPassenger(@RequestParam("passenger_id")Long passengerId){
         return passengerService.getPassenger(passengerId);
     }
 

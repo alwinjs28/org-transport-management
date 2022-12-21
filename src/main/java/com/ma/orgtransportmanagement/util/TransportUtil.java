@@ -66,6 +66,7 @@ public class TransportUtil extends MainUtil {
         busFeesDto.setTotalAmount(busFees.getTotalAmount());
         busFeesDto.setPaidAmount(busFees.getPaidAmount());
         busFeesDto.setDueAmount(busFees.getDueAmount());
+        busFeesDto.setPaidDate(busFees.getPaidDate());
 
         return busFeesDto;
     }
@@ -78,6 +79,7 @@ public class TransportUtil extends MainUtil {
         busFees.setTotalAmount(busFeesDto.getTotalAmount());
         busFees.setPaidAmount(busFeesDto.getPaidAmount());
         busFees.setDueAmount(busFeesDto.getDueAmount());
+        busFees.setPaidDate(busFeesDto.getPaidDate());
 
         return busFees;
     }

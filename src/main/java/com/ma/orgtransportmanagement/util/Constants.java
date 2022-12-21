@@ -9,4 +9,5 @@ public interface Constants {
     public static final String GET_STAFF_BY_ID_URL = "/staff/g_staff";
     public static final String STAFF_QUERY = "?staff_id=";
     public static final String PASSENGER_TYPE_STAFF = "staff";
+    public static final String INFO = "INFO";
 }

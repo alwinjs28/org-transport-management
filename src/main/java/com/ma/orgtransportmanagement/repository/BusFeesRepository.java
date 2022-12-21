@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BusFeesRepository extends JpaRepository<BusFees,Long> {
-    @Query(value = "SELECT b FROM BusFees b Where b.busTypeId=?1")
-    public BusFees getBusFees(Long busTypeId);
+    @Query(value = "SELECT b FROM BusFees b Where b.busFeesId=?1")
+    public BusFees getBusFees(Long busFeesId);
 }

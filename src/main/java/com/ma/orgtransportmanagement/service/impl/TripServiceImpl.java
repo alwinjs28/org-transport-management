@@ -34,4 +34,6 @@ public class TripServiceImpl implements TripService {
     public void delete(Trip trip){
         tripRepository.delete(trip);
     }
+
+
 }

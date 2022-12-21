@@ -1,32 +1,44 @@
 package com.ma.orgtransportmanagement.dto;
 
 import java.io.Serializable;
+import java.util.Date;
 
 public class BusFeesDto implements Serializable {
 
-    private Long busTypeId;
+    private Long busFeesId;
     private Long passengerId;
     private Double totalAmount;
     private Double paidAmount;
     private Double dueAmount;
+    private Date paidDate;
 
     public BusFeesDto(){
 
     }
-    public BusFeesDto(Long busTypeId,Long passengerId,Double totalAmount,Double paidAmount,Double dueAmount){
-        this.busTypeId = busTypeId;
+    public BusFeesDto(Long busFeesId,Long passengerId,Double totalAmount,Double paidAmount,Double dueAmount,Date paidDate){
+        this.busFeesId = busFeesId;
         this.passengerId =passengerId;
         this.totalAmount = totalAmount;
         this.paidAmount = paidAmount;
         this.dueAmount = dueAmount;
+        this.paidDate = paidDate;
     }
 
-    public Long getBusTypeId() {
-        return busTypeId;
+
+    public Date getPaidDate() {
+        return paidDate;
     }
 
-    public void setBusTypeId(Long busTypeId) {
-        this.busTypeId = busTypeId;
+    public void setPaidDate(Date paidDate) {
+        this.paidDate = paidDate;
+    }
+
+    public Long getBusFeesId() {
+        return busFeesId;
+    }
+
+    public void setBusFeesId(Long busFeesId) {
+        this.busFeesId = busFeesId;
     }
 
     public Long getPassengerId() {

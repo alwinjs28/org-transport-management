@@ -61,7 +61,7 @@ public class TransportUtil extends MainUtil {
     public BusFeesDto convertEntityToDto(BusFees busFees){
         BusFeesDto busFeesDto = new BusFeesDto();
 
-        busFeesDto.setBusTypeId(busFees.getBusTypeId());
+        busFeesDto.setBusFeesId(busFees.getBusTypeId());
         busFeesDto.setPassengerId(busFees.getPassengerId());
         busFeesDto.setTotalAmount(busFees.getTotalAmount());
         busFeesDto.setPaidAmount(busFees.getPaidAmount());
@@ -73,7 +73,7 @@ public class TransportUtil extends MainUtil {
     public BusFees convertDtoToEntity(BusFeesDto busFeesDto){
         BusFees busFees = new BusFees();
 
-        busFees.setBusTypeId(busFeesDto.getBusTypeId());
+        busFees.setBusTypeId(busFeesDto.getBusFeesId());
         busFees.setPassengerId(busFeesDto.getPassengerId());
         busFees.setTotalAmount(busFeesDto.getTotalAmount());
         busFees.setPaidAmount(busFeesDto.getPaidAmount());

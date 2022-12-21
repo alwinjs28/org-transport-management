@@ -1,14 +1,15 @@
 package com.ma.orgtransportmanagement.entity;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "busFees")
 public class BusFees {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "bus_type_id")
-    private Long busTypeId;
+    @Column(name = "bus_fees_id")
+    private Long busFeesId;
 
     @Column(name = "passenger_id")
     private Long passengerId;
@@ -21,24 +22,43 @@ public class BusFees {
 
     @Column(name = "due_amount")
     private Double dueAmount;
+    @Column(name = "paid_date")
+    private Date paidDate;
 
     public BusFees(){
 
     }
-    public BusFees(Long busTypeId,Long passengerId,Double totalAmount,Double paidAmount,Double dueAmount){
-        this.busTypeId = busTypeId;
+    public BusFees(Long busFeesId,Long passengerId,Double totalAmount,Double paidAmount,Double dueAmount,Date paidDate){
+        this.busFeesId = busFeesId;
         this.passengerId = passengerId;
         this.totalAmount = totalAmount;
         this.paidAmount = paidAmount;
         this.dueAmount = dueAmount;
+        this.paidDate = paidDate;
+    }
+
+    public Long getBusFeesId() {
+        return busFeesId;
+    }
+
+    public void setBusFeesId(Long busFeesId) {
+        this.busFeesId = busFeesId;
+    }
+
+    public Date getPaidDate() {
+        return paidDate;
+    }
+
+    public void setPaidDate(Date paidDate) {
+        this.paidDate = paidDate;
     }
 
     public Long getBusTypeId() {
-        return busTypeId;
+        return busFeesId;
     }
 
     public void setBusTypeId(Long busTypeId) {
-        this.busTypeId = busTypeId;
+        this.busFeesId = busTypeId;
     }
 
     public Long getPassengerId() {

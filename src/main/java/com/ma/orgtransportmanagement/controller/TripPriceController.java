@@ -37,7 +37,7 @@ public class TripPriceController {
 
     @RequestMapping(value = "g_amount/{passenger_type}/{trip_id}",method = RequestMethod.GET)
     @ResponseBody
-    public TripPriceDto getAmount(@PathVariable("passenger_type")String passengerType,@PathVariable("trip_id")Long tripId){
-        return tripPriceService.getAmount(passengerType,tripId);
+    public TripPriceDto getTripPrice(@PathVariable("passenger_type")String passengerType,@PathVariable("trip_id")Long tripId){
+        return tripPriceService.getTripPrice(passengerType,tripId);
     }
 }

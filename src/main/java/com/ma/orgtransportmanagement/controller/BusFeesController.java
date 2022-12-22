@@ -1,7 +1,7 @@
 package com.ma.orgtransportmanagement.controller;
 
 import com.ma.orgtransportmanagement.dto.BusFeesDto;
-import com.ma.orgtransportmanagement.dto.response.ResponseWrapperDto;
+import com.ma.orgtransportmanagement.dto.response.BusFeesResponseWrapperDto;
 import com.ma.orgtransportmanagement.service.BusFeesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class BusFeesController {
             return busFeesService.getBusFees(busFeesId);
         }
 
-        @RequestMapping(value = "s_bus_fees",method = RequestMethod.POST)
+        //@RequestMapping(value = "s_bus_fees",method = RequestMethod.POST)
         @ResponseBody
         public BusFeesDto saveBusFees(@RequestBody BusFeesDto busFeesDto){
             return busFeesService.saveBusFees(busFeesDto);
@@ -38,7 +38,7 @@ public class BusFeesController {
 
         @RequestMapping(value = "s_total_amount",method = RequestMethod.POST)
         @ResponseBody
-        public ResponseWrapperDto saveTotalAmount(@RequestBody BusFeesDto busFeesDto){
+        public BusFeesResponseWrapperDto saveTotalAmount(@RequestBody BusFeesDto busFeesDto){
             return busFeesService.saveTotalAmount(busFeesDto);
         }
 

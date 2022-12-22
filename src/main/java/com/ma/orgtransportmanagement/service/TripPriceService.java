@@ -9,6 +9,6 @@ public interface TripPriceService {
     public TripPriceDto update(TripPrice tripPrice);
     public void delete(TripPrice tripPrice);
 
-    public TripPriceDto getAmount(String passengerType,Long tripId);
+    public TripPriceDto getTripPrice(String passengerType,Long tripId);
 
 }

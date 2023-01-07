@@ -2,19 +2,19 @@ package com.ma.orgtransportmanagement.dto.response;
 
 import java.io.Serializable;
 
-public class TotalCollectionDto implements Serializable {
+public class SummaryDto implements Serializable {
     private Double totalAmountCollected;
     private Double totalBalanceAmount;
-    private Long totalStudentPaid;
+    private Long totalPersonsPaid;
 
-    public TotalCollectionDto(){
+    public SummaryDto(){
 
     }
 
-    public TotalCollectionDto(Double totalAmountCollected,Double totalBalanceAmount,Long totalStudentPaid){
+    public SummaryDto(Double totalAmountCollected, Double totalBalanceAmount, Long totalPersonsPaid){
         this.totalAmountCollected = totalAmountCollected;
         this.totalBalanceAmount = totalBalanceAmount;
-        this.totalStudentPaid = totalStudentPaid;
+        this.totalPersonsPaid = totalPersonsPaid;
     }
 
     public Double getTotalAmountCollected() {
@@ -33,11 +33,11 @@ public class TotalCollectionDto implements Serializable {
         this.totalBalanceAmount = totalBalanceAmount;
     }
 
-    public Long getTotalStudentPaid() {
-        return totalStudentPaid;
+    public Long getTotalPersonsPaid() {
+        return totalPersonsPaid;
     }
 
-    public void setTotalStudentPaid(Long totalStudentPaid) {
-        this.totalStudentPaid = totalStudentPaid;
+    public void setTotalPersonsPaid(Long totalPersonsPaid) {
+        this.totalPersonsPaid = totalPersonsPaid;
     }
 }

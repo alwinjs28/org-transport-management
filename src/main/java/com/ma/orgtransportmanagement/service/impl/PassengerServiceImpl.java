@@ -1,10 +1,10 @@
 package com.ma.orgtransportmanagement.service.impl;
 
 import com.ma.orgtransportmanagement.dto.PassengerDto;
-import com.ma.orgtransportmanagement.dto.response.MessageLevel;
-import com.ma.orgtransportmanagement.dto.response.MetaDataDto;
-import com.ma.orgtransportmanagement.dto.response.PassengerResponseWrapperDto;
+import com.ma.orgtransportmanagement.dto.response.*;
+import com.ma.orgtransportmanagement.entity.BusFees;
 import com.ma.orgtransportmanagement.entity.Passenger;
+import com.ma.orgtransportmanagement.repository.BusFeesRepository;
 import com.ma.orgtransportmanagement.repository.PassengerRepository;
 import com.ma.orgtransportmanagement.service.PassengerService;
 import com.ma.orgtransportmanagement.util.Constants;
@@ -16,7 +16,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 
@@ -30,6 +32,8 @@ public class PassengerServiceImpl implements PassengerService {
     private String staffServiceAddress;
     @Autowired
     PassengerRepository passengerRepository;
+    @Autowired
+    BusFeesRepository busFeesRepository;
 
     public PassengerResponseWrapperDto getPassenger(Long passengerId) {
         Passenger passenger = passengerRepository.getPassenger(passengerId);
@@ -139,5 +143,88 @@ public class PassengerServiceImpl implements PassengerService {
         }
 
         return name;
+    }
+    public TotalCollectionWrapperDto getTotalCollection(String passengerType){
+        TotalCollectionWrapperDto totalCollectionWrapperDto = new TotalCollectionWrapperDto();
+        if(passengerType.equals("All")){
+            totalCollectionWrapperDto = getTotalCollectionByPassengerType(Constants.PASSENGER_TYPE_STUDENT,totalCollectionWrapperDto);
+            totalCollectionWrapperDto = getTotalCollectionByPassengerType(Constants.PASSENGER_TYPE_STAFF,totalCollectionWrapperDto);
+        }else {
+           totalCollectionWrapperDto = getTotalCollectionByPassengerType(passengerType,totalCollectionWrapperDto);
+        }
+        return totalCollectionWrapperDto;
+    }
+    public TotalCollectionWrapperDto getTotalCollectionByPassengerType(String passengerType,TotalCollectionWrapperDto totalCollectionWrapperDto){
+        SummaryDto summaryDto = new SummaryDto();
+        List<StudentCollectionDto> listOfStudentCollectionDto = new ArrayList<>();
+        List<StaffCollectionDto> listOfStaffCollectionDto = new ArrayList<>();
+
+        List<Passenger> passengers = passengerRepository.getTotalCollection(passengerType);
+
+        Double totalCollectedAmount = 0.0;
+        Double totalDueAmount = 0.0;
+        for (int i=1;i<=passengers.size();i++) {
+            Passenger passenger = passengers.get(i-1);
+            StudentCollectionDto studentCollectionDto = new StudentCollectionDto();
+            StaffCollectionDto staffCollectionDto = new StaffCollectionDto();
+            Long passengerId = passenger.getPassengerId();
+            String passengerName = passenger.getPassengerName();
+            Long idNumber = passenger.getIdNumber();
+
+            List<BusFees> busFees = busFeesRepository.getBusFeesPassengerId(passengerId);
+            for (BusFees busFee : busFees) {
+                Double totalAmount = busFee.getTotalAmount();
+                Double paidAmount = busFee.getPaidAmount();
+                Double dueAmount = busFee.getDueAmount();
+
+                totalCollectedAmount = totalAmount+totalCollectedAmount;
+                totalDueAmount = dueAmount+totalDueAmount;
+
+                if (passengerType.equals(Constants.PASSENGER_TYPE_STUDENT)) {
+                    studentCollectionDto.setsNo((long) i);
+                    studentCollectionDto.setStudentId(idNumber);
+                    studentCollectionDto.setStudentName(passengerName);
+                    studentCollectionDto.setTotalAmount(totalAmount);
+                    studentCollectionDto.setPaidAmount(paidAmount);
+                }
+                else  {
+                    staffCollectionDto.setsNo((long) i);
+                    staffCollectionDto.setStaffId(idNumber);
+                    staffCollectionDto.setStaffName(passengerName);
+                    staffCollectionDto.setTotalAmount(totalAmount);
+                    staffCollectionDto.setPaidAmount(paidAmount);
+                }
+            }
+
+            listOfStudentCollectionDto.add(studentCollectionDto);
+            listOfStaffCollectionDto.add(staffCollectionDto);
+
+        }
+        summaryDto.setTotalAmountCollected(totalCollectedAmount);
+        summaryDto.setTotalBalanceAmount(totalDueAmount);
+        summaryDto.setTotalPersonsPaid((long)passengers.size());
+
+        if(passengerType.equals(Constants.PASSENGER_TYPE_STUDENT)) {
+            totalCollectionWrapperDto.setStudentCollectionDto(listOfStudentCollectionDto);
+        }else {
+            totalCollectionWrapperDto.setStaffCollectionDto(listOfStaffCollectionDto);
+        }
+        if(totalCollectionWrapperDto.getSummaryDto() != null) {
+            SummaryDto previousSummaryDto = totalCollectionWrapperDto.getSummaryDto();
+
+            Double newTotalAmountCollected = summaryDto.getTotalAmountCollected() + previousSummaryDto.getTotalAmountCollected();
+            Double newTotalBalanceAmount = summaryDto.getTotalBalanceAmount() + previousSummaryDto.getTotalBalanceAmount();
+            Long totalPersonsPaid = summaryDto.getTotalPersonsPaid() + previousSummaryDto.getTotalPersonsPaid();
+
+            summaryDto.setTotalAmountCollected(newTotalAmountCollected);
+            summaryDto.setTotalBalanceAmount(newTotalBalanceAmount);
+            summaryDto.setTotalPersonsPaid(totalPersonsPaid);
+
+            totalCollectionWrapperDto.setSummaryDto(summaryDto);
+        } else {
+
+            totalCollectionWrapperDto.setSummaryDto(summaryDto);
+        }
+        return totalCollectionWrapperDto;
     }
 }

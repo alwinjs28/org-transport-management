@@ -2,6 +2,7 @@ package com.ma.orgtransportmanagement.controller;
 
 import com.ma.orgtransportmanagement.dto.PassengerDto;
 import com.ma.orgtransportmanagement.dto.response.PassengerResponseWrapperDto;
+import com.ma.orgtransportmanagement.dto.response.TotalCollectionWrapperDto;
 import com.ma.orgtransportmanagement.entity.Passenger;
 import com.ma.orgtransportmanagement.service.PassengerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class PassengerController {
     @ResponseBody
     public void deletePassenger(@RequestBody Passenger passenger){
         passengerService.delete(passenger);
+    }
+
+    @RequestMapping(value = "get_total_collection/{passenger_type}",method = RequestMethod.GET)
+    @ResponseBody
+    public TotalCollectionWrapperDto getTotalCollection(@PathVariable("passenger_type")String passengerType){
+        return passengerService.getTotalCollection(passengerType);
     }
 
 }

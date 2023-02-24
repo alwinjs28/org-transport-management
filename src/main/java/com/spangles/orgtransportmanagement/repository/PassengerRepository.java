@@ -17,4 +17,8 @@ public interface PassengerRepository extends JpaRepository<Passenger,Long> {
 
     @Query(value = "SELECT p FROM Passenger p WHERE p.tripId=?1")
     public List<Passenger>getTotalCollectionByTripId(Long tripId);
+    @Query(value = "SELECT p FROM Passenger p WHERE p.tripId IN (?1)")
+    List<Passenger> getPassengerByTripIds(List<Long> tripId);
+    @Query(value = "SELECT p FROM Passenger p ")
+    List<Passenger> getAllPassenger();
 }

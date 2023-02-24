@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 
@@ -317,6 +318,24 @@ public class PassengerServiceImpl implements PassengerService {
 
         }
         return totalCollectionWrapperDto;
+    }
+    public Long getAllPassenger(){
+        List<Passenger> passengers = passengerRepository.getAllPassenger();
+
+//            List<Long> tripIds2 = null;//trips.stream().map(Trip::getTripId).collect(Collectors.toList());
+//ASC
+//        tripIds2.stream().sorted().forEachOrdered(e->System.out.println(e));
+//DESC
+//        tripIds2.stream().sorted(Comparator.reverseOrder()).forEachOrdered(e->System.out.println(e));
+
+        //ASC
+//         passengers.stream().sorted(Comparator.comparing(Passenger::getPassengerId)).forEachOrdered(e->System.out.println(e.getPassengerId()));
+         //DESC
+//         passengers.stream().sorted(Comparator.comparing(Passenger::getPassengerId).reversed()).forEachOrdered(e->System.out.println(e.getPassengerId()));
+         passengers.stream().sorted(Comparator.comparing(Passenger::getPassengerName)).forEachOrdered(e->System.out.println(e.getPassengerName()));
+         long count = passengers.stream().count();
+
+         return count;
     }
 
 }

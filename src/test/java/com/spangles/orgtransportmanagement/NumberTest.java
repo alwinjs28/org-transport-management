@@ -6,7 +6,7 @@ public class NumberTest {
 
         for (int i=1; i<=number-1; i++){
 
-            if (i%2 != 0){
+            if (i%2 == 0 || i%3 == 0 || i%5 == 0){
                 System.out.print(" "+i);
             }
         }

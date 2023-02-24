@@ -6,6 +6,7 @@ import com.spangles.orgtransportmanagement.dto.response.SummaryDto;
 import com.spangles.orgtransportmanagement.dto.response.TotalCollectionWrapperDto;
 import com.spangles.orgtransportmanagement.service.PassengerService;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -72,4 +73,9 @@ public class PassengerServiceImplTest {
         log.info("Total Person Paid : {}",totalPersonPaid);
     }*/
 
+    @Test
+    public void getAllPassengerTest(){
+        Long count = passengerService.getAllPassenger();
+        log.info("The Number Of Passenger ia : {}",count);
+    }
 }

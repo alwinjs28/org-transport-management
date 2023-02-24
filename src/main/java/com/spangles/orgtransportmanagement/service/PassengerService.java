@@ -5,6 +5,8 @@ import com.spangles.orgtransportmanagement.dto.response.PassengerResponseWrapper
 import com.spangles.orgtransportmanagement.dto.response.TotalCollectionWrapperDto;
 import com.spangles.orgtransportmanagement.entity.Passenger;
 
+import java.util.List;
+
 public interface PassengerService {
     public PassengerResponseWrapperDto getPassenger(Long passengerId);
     public PassengerDto savePassenger(PassengerDto passengerDto);
@@ -15,4 +17,5 @@ public interface PassengerService {
     public String getStaffName(Long passengerId);
     public TotalCollectionWrapperDto getTotalCollection(String passengerType);
     public TotalCollectionWrapperDto getTotalCollectionByTripId(Long tripId);
+    Long getAllPassenger();
 }

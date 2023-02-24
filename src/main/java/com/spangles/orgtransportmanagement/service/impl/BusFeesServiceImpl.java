@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BusFeesServiceImpl implements BusFeesService {
@@ -138,5 +140,14 @@ public class BusFeesServiceImpl implements BusFeesService {
 
         }
         return busFeesResponseWrapperDto;
+    }
+    public Double getAllBusFees(){
+
+        List<BusFees> busFees = busFeesRepository.getAllBusFees();
+        busFees.stream().filter(e->e.getTotalAmount()>1000).forEachOrdered(e->System.out.println(e.getTotalAmount()));
+
+        Double totalAmount = busFees.stream().mapToDouble(e->e.getTotalAmount()).sum();
+
+        return totalAmount;
     }
 }

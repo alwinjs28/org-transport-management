@@ -1,6 +1,8 @@
 package com.spangles.orgtransportmanagement.controller;
 
 import com.spangles.orgtransportmanagement.dto.VehicleExpenseDto;
+import com.spangles.orgtransportmanagement.dto.response.ExpenseReportDto;
+import com.spangles.orgtransportmanagement.dto.response.ProfitDto;
 import com.spangles.orgtransportmanagement.dto.response.VehicleExpenseWrapperDto;
 import com.spangles.orgtransportmanagement.service.VehicleExpenseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,5 +35,15 @@ public class VehicleExpenseController {
     @ResponseBody
     public void delete(@RequestBody VehicleExpenseDto vehicleExpenseDto){
         vehicleExpenseService.delete(vehicleExpenseDto);
+    }
+    @RequestMapping(value = "/g_expense/{vehicle_id}",method = RequestMethod.GET)
+    @ResponseBody
+    public ExpenseReportDto getExpenseByVehicleId(@PathVariable ("vehicle_id")Long vehicleId){
+        return vehicleExpenseService.getExpenseByVehicleId(vehicleId);
+    }
+    @RequestMapping(value = "/g_profit/{vehicle_id}",method = RequestMethod.GET)
+    @ResponseBody
+    public ProfitDto getProfitByVehicleId(@PathVariable ("vehicle_id") Long vehicleId){
+        return vehicleExpenseService.getProfitByVehicleId(vehicleId);
     }
 }
